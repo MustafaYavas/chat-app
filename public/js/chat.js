@@ -1,4 +1,4 @@
-const socket = io();    // server'a bağlanmak için. server ve client arasındaki event'leri alıp vermemize izin verir.
+const socket = io();
 
 // Elements
 const messageForm = document.querySelector("#form-message");
@@ -71,16 +71,14 @@ socket.on("roomData", ({room, users}) => {
 messageForm.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    // disabled - mesaj gönderilene kadar btonu kullanılamaz hale getirir
     btnMessageForm.setAttribute("disabled", "disabled");
  
     const inputText = inputMessageForm.value;
 
     socket.emit("sendMessage", inputText, (error) => {
         btnMessageForm.removeAttribute("disabled");
-        // enabled - mesaj gönderildikten sonra buton eski haline döner
         inputMessageForm.value = "";
-        inputMessageForm.focus();   // mesaj gönderildikten sonra tekrar buraya odaklanmayı sağlar
+        inputMessageForm.focus();
         
         if(error) {
             return console.log(error);
@@ -94,7 +92,6 @@ btnSendLocation.addEventListener("click", () => {
     if(!navigator.geolocation)
         return alert("Geolocation is not supported by your browser");
 
-    // butona bir kere bastıktan sonra konum gönderilene kadar buton devre dışı kalıyor
     btnSendLocation.setAttribute("disabled", "disabled");
 
     navigator.geolocation.getCurrentPosition((position) => {
@@ -102,8 +99,6 @@ btnSendLocation.addEventListener("click", () => {
             lat: position.coords.latitude,
             lon: position.coords.longitude
         }, (status) => {
-            // console.log(status); // konum paylaşımı başarılı ise "location shared!" mesajını yazdırır
-            // konum gönderilden sonra buton tekrar kullanılabilir hale geliyor.
             btnSendLocation.removeAttribute("disabled");
         });
     })
